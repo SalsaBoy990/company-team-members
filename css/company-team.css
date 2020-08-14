@@ -1,0 +1,146 @@
+/* general */
+.mb0 {
+  margin-bottom: 0;
+}
+
+.mbhalf {
+  margin-bottom: 0.75rem;
+}
+
+.mthalf {
+  margin-top: 0.75rem;
+}
+
+.mb1 {
+  margin-bottom: 1.5rem;
+}
+
+.mt2 {
+  margin-top: 3rem;
+}
+
+.mt1 {
+  margin-top: 1.5rem;
+}
+
+.italic {
+  font-style: italic;
+}
+
+
+/* delete button styling red */
+button.company-team.button-danger {
+  color: #dc3232;
+  border-color: #dc3232;
+  background: #f3f5f6;
+  vertical-align: top;
+}
+
+button.company-team.button-danger:hover {
+  color: #f3f5f6;
+  border-color: #f3f5f6;
+  background: #dc3232;
+  vertical-align: top;
+}
+
+/* Adjust icon positions */
+.company-team.dashicons.dashicons-plus {
+  margin-top: 5px;
+  margin-right: 2px;
+}
+
+.company-team.dashicons.dashicons-edit {
+  margin-top: 5px;
+  margin-right: 2px;
+}
+
+/* Company team table styling */
+/* shortcode table view */
+div.company-team-wrapper {
+  overflow-x: scroll;
+  width: 98%;
+}
+
+table.company-team.widefat {
+  table-layout: auto;
+}
+
+table.company-team.widefat > thead th {
+  font-weight: bold;
+  color: #23282d;
+  font-variant: small-caps;
+}
+
+table.company-team.widefat > thead th {
+  font-weight: bold;
+  color: #464b50;
+  font-variant: small-caps;
+}
+
+table.company-team.widefat > tbody td {
+  font-size: 16px;
+}
+
+table.company-team td.small-col {
+  min-width: 75px;
+}
+
+
+table.company-team td {
+  vertical-align : middle;
+}
+
+table.company-team td.medium-col {
+  min-width: 150px;
+}
+
+
+table.company-team td .small-image {
+  width: 64px;
+  height: 64px;
+}
+
+table.company-team td .auto-image {
+  width: 100%;
+  height: auto;
+}
+
+table.company-team .image-table {
+  width: 150px;
+  height: auto;
+}
+
+/* shortcode list view */
+ul.company-team.grid-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  list-style-type: none;
+  list-style-image: none;
+  margin: 0;
+  padding: 0;
+  grid-gap: 1em;
+  text-align: left;
+}
+
+ul.company-team.grid-list li {
+  max-width: 320px;
+}
+
+ul.company-team.grid-list li > img {
+  width: 220px;
+  height: auto;
+}
+
+ul.company-team.grid-list li > h2 {
+  font-size: 1.5rem;
+}
+
+div.company-team.list-heading {
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+div.company-team.list-heading h2 {
+  margin-bottom: 0.25rem;
+}
+
