@@ -9,16 +9,16 @@ You can paste in the table or list of the workers using the shortcode supplied:
 
 ## Default usage:
 
-- `[company-team]`
+- `[company_team]`
 
 The default view is list, but you can change it with the `type` attribute:
 
-- `[company-team type="table"]`, or
-- `[company-team type="list"]`
+- `[company_team type="table"]`, or
+- `[company_team type="list"]`
 
 You can also enable or disable specific fields to be shown:
 
-`[company-team type="list" email="false" works_since="true]`
+`[company_team type="list" email="false" works_since="true"]`
 
 
 The full list of available options (with defaults):
