@@ -5,7 +5,7 @@ require_once 'constants.php';
 
 
 // create log file
-require_once('utils/create_log.php');
+require_once 'utils/create_log.php';
 
 
 // requires custom exception classes
@@ -16,9 +16,9 @@ require_once 'utils/save_data.php';
 
 
 // shortcode methods
-require_once 'inc/company-team-shortcodes.php';
+require_once 'inc/company_team_shortcodes.php';
 
 
 // crud methods for dealing with db table operations
-require_once 'inc/company-team-crud.php';
+require_once 'inc/company_team_crud.php';
 

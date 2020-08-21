@@ -1,11 +1,11 @@
 <?php
-
+namespace AGCompanyTeam;
 /**
  * Define a custom exception class
  */
-class PermissionsException extends Exception
+class PermissionsException extends \Exception
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }
@@ -22,9 +22,9 @@ class PermissionsException extends Exception
 
 
 
-class DBQueryException extends Exception
+class DBQueryException extends \Exception
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }
@@ -44,7 +44,7 @@ class DBQueryException extends Exception
 // subtype of db query excerption
 class EmptyDBTableException extends DBQueryException
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }
@@ -64,7 +64,7 @@ class EmptyDBTableException extends DBQueryException
 // subtype of db query excerption
 class InsertRecordException extends DBQueryException
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }
@@ -84,7 +84,7 @@ class InsertRecordException extends DBQueryException
 // subtype of db query excerption
 class UpdateRecordException extends DBQueryException
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }
@@ -104,7 +104,7 @@ class UpdateRecordException extends DBQueryException
 // subtype of db query excerption
 class DeleteRecordException extends DBQueryException
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }
@@ -121,9 +121,9 @@ class DeleteRecordException extends DBQueryException
 
 
 
-class ImageInputException extends Exception
+class ImageInputException extends \Exception
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }
@@ -140,7 +140,7 @@ class ImageInputException extends Exception
 
 class NoImageUploadException extends ImageInputException
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }
@@ -157,9 +157,9 @@ class NoImageUploadException extends ImageInputException
 
 
 
-class FileException extends Exception
+class FileException extends \Exception
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }
@@ -177,7 +177,7 @@ class FileException extends Exception
 
 class FileOpenException extends FileException
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }
@@ -194,7 +194,7 @@ class FileOpenException extends FileException
 
 class FileCloseException extends FileException
 {
-  public function __construct($message, $code = 0, Exception $previous = null)
+  public function __construct($message, $code = 0, \Exception $previous = null)
   {
     parent::__construct($message, $code, $previous);
   }

@@ -1,9 +1,21 @@
 <?php
+namespace AGCompanyTeam;
 
 class Company_Team_Save_Data
 {
 
   private static $instance;
+
+  const DEBUG = 0;
+  const LOGGING = 1;
+
+  public function __construct()
+  {
+  }
+  public function __destruct()
+  {
+  }
+
 
   /**
    * Get class instance, if not exists -> instantiate it
@@ -11,14 +23,6 @@ class Company_Team_Save_Data
    */
   public static function getInstance()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br />";
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
-    }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-    }
     if (self::$instance == NULL) {
       self::$instance = new self();
     }
@@ -36,13 +40,13 @@ class Company_Team_Save_Data
    */
   public static function saveDataToJSON($filename, $json_data)
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
+    if (self::DEBUG) {
       $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br />";
       echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
 
     // remove illegal characters from filename
@@ -71,30 +75,30 @@ class Company_Team_Save_Data
 
     } catch (FileOpenException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '. </p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
     } catch (FileCloseException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '. </p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
     } catch (FileException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '. </p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '. </p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
     }
@@ -112,13 +116,13 @@ class Company_Team_Save_Data
    */
   public static function saveDataToCSV($filename, $formData, $delimiter = ';')
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
+    if (self::DEBUG) {
       $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br />";
       echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
 
 
@@ -182,30 +186,30 @@ class Company_Team_Save_Data
 
     } catch (FileOpenException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '. </p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
     } catch (FileCloseException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '. </p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
     } catch (FileException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '. </p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '. </p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
     
     }

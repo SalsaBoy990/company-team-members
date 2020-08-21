@@ -8,5 +8,8 @@
     global $wpdb;
     $table_name = $wpdb->prefix . 'company_team';
     $wpdb->query( "DROP TABLE IF EXISTS $table_name" );
-    delete_option("company_team_db_version");
-?>
+
+    // check if option exists, then delete
+    if (!get_option('company_team_db_version') === false) {
+        delete_option('company_team_db_version');
+    }

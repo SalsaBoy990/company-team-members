@@ -1,26 +1,37 @@
 <?php
-
+namespace AGCompanyTeam;
 /**
- * CRUD functionality trait
+ * CRUD functionality class
  * 
  * Note: uses a global constant called 'AG_COMPANY_TEAM_PLUGIN_DIR',
  * but has no other dependencies
  */
-trait Crud
+class Crud
 {
+
+  const DEBUG = 0;
+  const LOGGING = 1;
+
+  public function __construct()
+  {
+  }
+  public function __destruct()
+  {
+  }
+
 
   /**
    * Post actions switcher function
    */
-  function company_team_post_action()
+  public function company_team_post_action()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
+    if (self::DEBUG) {
+      $company_team_info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
+      echo '<div class="notice notice-info is-dismissible">' . $company_team_info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
 
     global $id;
@@ -83,13 +94,13 @@ trait Crud
    */
   function handle_insert()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
+    if (self::DEBUG) {
+      $company_team_info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
+      echo '<div class="notice notice-info is-dismissible">' . $company_team_info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
     global $wpdb;
 
@@ -120,23 +131,23 @@ trait Crud
       }
     } catch (InsertRecordException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
     } catch (DBQueryException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
     }
   }
@@ -149,13 +160,13 @@ trait Crud
    */
   function handle_update()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
+    if (self::DEBUG) {
+      $company_team_info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
+      echo '<div class="notice notice-info is-dismissible">' . $company_team_info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
 
     try {
@@ -167,7 +178,7 @@ trait Crud
       // if we do not want to update the profile image, e.g. url is an empty string,
       // do not update profile_photo field!
       if ($sanitizedData['new_file_url'] == '') {
-        echo 'Belép';
+
         // prepare query, update table
         $res = $wpdb->update(
           $wpdb->prefix . 'company_team',
@@ -213,23 +224,23 @@ trait Crud
       }
     } catch (UpdateRecordException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
     } catch (DBQueryException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
     }
@@ -243,13 +254,13 @@ trait Crud
    */
   function handle_delete()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
+    if (self::DEBUG) {
+      $company_team_info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
+      echo '<div class="notice notice-info is-dismissible">' . $company_team_info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
 
     try {
@@ -273,23 +284,23 @@ trait Crud
       }
     } catch (DeleteRecordException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
     } catch (DBQueryException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
     }
@@ -302,13 +313,13 @@ trait Crud
    */
   function company_team_insert()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
+    if (self::DEBUG) {
+      $company_team_info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
+      echo '<div class="notice notice-info is-dismissible">' . $company_team_info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
     
     try {
@@ -325,16 +336,16 @@ trait Crud
       }
     } catch (PermissionsException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
     }
   }
@@ -347,13 +358,13 @@ trait Crud
    */
   function company_team_list()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
+    if (self::DEBUG) {
+      $company_team_info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
+      echo '<div class="notice notice-info is-dismissible">' . $company_team_info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
 
     try {
@@ -371,15 +382,15 @@ trait Crud
 
     } catch (PermissionsException $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
     }
   }

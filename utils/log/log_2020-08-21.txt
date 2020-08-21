@@ -1,0 +1,12 @@
+2020-08-21 20:19:00 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_shortcodes.php:company_team_user_form:98
+2020-08-21 20:19:00 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_shortcodes.php:get_all_members_from_db:38
+2020-08-21 20:19:00 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_shortcodes.php:company_team_user_form:98
+2020-08-21 20:19:00 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_shortcodes.php:get_all_members_from_db:38
+2020-08-21 20:19:01 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_shortcodes.php:company_team_user_form:98
+2020-08-21 20:19:01 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_shortcodes.php:get_all_members_from_db:38
+2020-08-21 20:19:01 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_shortcodes.php:company_team_user_form:98
+2020-08-21 20:19:01 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_shortcodes.php:get_all_members_from_db:38
+2020-08-21 20:33:52 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_crud.php:company_team_list:367
+2020-08-21 20:33:52 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_crud.php:company_team_post_action:34
+2020-08-21 20:39:17 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_crud.php:company_team_list:367
+2020-08-21 20:39:17 - INFO --> Entering - C:\laragon\www\basic\wp-content\plugins\company-team\inc\company_team_crud.php:company_team_post_action:34

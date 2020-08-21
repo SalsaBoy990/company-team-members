@@ -1,13 +1,24 @@
 <?php
-
+namespace AGCompanyTeam;
 /**
- * Shortcode functionality trait
+ * Shortcode functionality class
  * 
  * Note: uses a global constant called 'AG_COMPANY_TEAM_PLUGIN_DIR',
  * but has no other dependencies
  */
-trait ShortCodes
+class ShortCodes
 {
+
+  const DEBUG = 0;
+  const LOGGING = 1;
+
+  public function __construct()
+  {
+  }
+  public function __destruct()
+  {
+  }
+
 
   /**
    * Get all members from the database
@@ -16,15 +27,15 @@ trait ShortCodes
    * @param reference $formData
    * @return bool
    */
-  function get_all_members_from_db(&$formData)
+  public function get_all_members_from_db(&$formData)
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
+    if (self::DEBUG) {
       $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
       echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
 
     try {
@@ -45,16 +56,16 @@ trait ShortCodes
 
     } catch (EmptyDBTableException $ex) {
       echo '<div class="notice notice-warning is-dismissible"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
 
-    } catch (Exception $ex) {
+    } catch (\Exception $ex) {
       echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-      if (AG_COMPANY_TEAM_LOGGING) {
-        global $log;
-        $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+      if (self::LOGGING) {
+        global $company_team_log;
+        $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
       }
     } finally {
       // always executes
@@ -76,15 +87,15 @@ trait ShortCodes
    * @return void
    * @see https://developer.wordpress.org/reference/functions/shortcode_atts/
    */
-  function company_team_user_form($atts, $content = null)
+  public function company_team_user_form($atts, $content = null)
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
+    if (self::DEBUG) {
       $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . "<br>";
       echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
     
     global $post;
@@ -113,9 +124,9 @@ trait ShortCodes
     ob_start();
 
     if ($type === 'table') {
-      include AG_COMPANY_TEAM_PLUGIN_DIR . '/pages/company-team-shortcode-table.php';
+      include __DIR__ . '/../pages/company_team_shortcode_table.php';
     } else if ($type === 'list') {
-      include AG_COMPANY_TEAM_PLUGIN_DIR . '/pages/company-team-shortcode-list.php';
+      include __DIR__ . '/../pages/company_team_shortcode_list.php';
     }
 
     $content = ob_get_clean();

@@ -11,6 +11,9 @@ Text Domain: company-team
 Domain Path: /languages
 */
 
+// always use namespaces to avoid
+// class/function/const name collisions
+namespace AGCompanyTeam;
 
 // require all requires once
 require_once 'requires.php';
@@ -22,16 +25,26 @@ require_once 'requires.php';
 class Company_Team
 {
   // use shortcodes trait
-  use ShortCodes;
-
-  // use crud functionality trait
-  use Crud;
+  // use \AGCompanyTeam\ShortCodes;
+  // // use crud functionality trait
+  // use \AGCompanyTeam\Crud;
 
   const br = '<br />';
   const TEXT_DOMAIN = 'company-team';
 
+  // debug and logging constants
+  const DEBUG = 0;
+  const LOGGING = 1;
+
+  const TABLE_NAME = 'company_team';
+  const DB_VERSION = '1.0';
+
   // class instance
   private static $instance;
+
+  public static $crud;
+  public static $shortcodes;
+
 
 
 
@@ -41,18 +54,12 @@ class Company_Team
    */
   public static function getInstance()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . Company_Team::br;
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
-    }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-    }
     if (self::$instance == NULL) {
-      self::$instance = new self();
+      self::$instance = new self(
+        new \AGCompanyTeam\Crud(),
+        new \AGCompanyTeam\ShortCodes()
+      );
     }
-
     return self::$instance;
   }
 
@@ -63,21 +70,25 @@ class Company_Team
    * - add hooks here
    * @return void
    */
-  private function __construct()
-  {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . Company_Team::br;
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
-    }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-    }
+  private function __construct(
+    \AGCompanyTeam\Crud $crud,
+    \AGCompanyTeam\ShortCodes $shortcodes
+  ) {
+
+    self::$crud = $crud;
+    self::$shortcodes = $shortcodes;
+
+    // need to happen in global namespace
+    // we don't need to do anything when deactivation
+    // register_deactivation_hook(__FILE__, function () {});
+    register_activation_hook(__FILE__, array($this, 'activate_plugin_create_table'));
+
 
     add_action('plugins_loaded', array($this, 'load_textdomain'));
 
     // register shortcode to list all members
-    add_shortcode('company_team', array($this, 'company_team_user_form'));
+    add_shortcode('company_team', array(self::$shortcodes, 'company_team_user_form'));
+
 
     // add admin menu and page
     add_action('admin_menu', array($this, 'company_team_admin_menu'));
@@ -100,14 +111,15 @@ class Company_Team
 
   // METHODS
 
-  public static function load_textdomain() {
+  public static function load_textdomain()
+  {
     // modified slightly from https://gist.github.com/grappler/7060277#file-plugin-name-php
-  
+
     $domain = self::TEXT_DOMAIN;
-    $locale = apply_filters( 'plugin_locale', get_locale(), $domain );
-    
-    load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
-    load_plugin_textdomain( $domain, FALSE, basename( dirname( __FILE__ ) ) . '/languages/' );
+    $locale = apply_filters('plugin_locale', get_locale(), $domain);
+
+    load_textdomain($domain, trailingslashit(\WP_LANG_DIR) . $domain . '/' . $domain . '-' . $locale . '.mo');
+    load_plugin_textdomain($domain, FALSE, basename(dirname(__FILE__)) . '/languages/');
   }
 
 
@@ -118,20 +130,12 @@ class Company_Team
    */
   function company_team_admin_menu()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . Company_Team::br;
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
-    }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-    }
     add_menu_page(
       __('Company Team Members', 'company-team'), // page title
       __('Company Team', 'company-team'), // menu title
       'manage_options', // capability
       'company_team_list', // menu slug
-      array($this, 'company_team_list'), // callback
+      array(self::$crud, 'company_team_list'), // callback
       'dashicons-groups' // icon
     );
 
@@ -141,7 +145,7 @@ class Company_Team
       __('Add new', 'company-team'),  // menu title
       'manage_options', // capability
       'company_team_insert', // menu slug
-      array($this, 'company_team_insert') // callback
+      array(self::$crud, 'company_team_insert') // callback
     );
   }
 
@@ -153,14 +157,6 @@ class Company_Team
    */
   function company_team_admin_css()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . Company_Team::br;
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
-    }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-    }
     wp_enqueue_style(
       'company_team_css',
       plugins_url() . '/company-team/css/company-team.css'
@@ -175,13 +171,13 @@ class Company_Team
    */
   function add_profile_photo(&$profilepicture)
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
+    if (self::DEBUG) {
       $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . Company_Team::br;
       echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
 
 
@@ -259,13 +255,13 @@ class Company_Team
    */
   function sanitize_input($input)
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
+    if (self::DEBUG) {
       $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . Company_Team::br;
       echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
     return wp_strip_all_tags(trim($input));
   }
@@ -278,13 +274,13 @@ class Company_Team
    */
   function get_form_input_values()
   {
-    if (AG_COMPANY_TEAM_DEBUG) {
+    if (self::DEBUG) {
       $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . Company_Team::br;
       echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
     }
-    if (AG_COMPANY_TEAM_LOGGING) {
-      global $log;
-      $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+    if (self::LOGGING) {
+      global $company_team_log;
+      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
     }
     // store escaped user input field values
     $formValues = array();
@@ -301,7 +297,7 @@ class Company_Team
         $error_code = intval($_FILES['profilepicture']['error'], 10);
         $profilepicture = $_FILES['profilepicture'];
         // POST image error
-        if ( $error_code > 0) {
+        if ($error_code > 0) {
           /**
            * Error code explanations
            * @see https://www.php.net/manual/en/features.file-upload.errors.php
@@ -335,29 +331,25 @@ class Company_Team
         }
         $new_file_url = $this->add_profile_photo($profilepicture);
         $formValues['new_file_url'] = $new_file_url;
-
-
       } catch (NoImageUploadException $ex) {
         echo '<div class="notice notice-warning is-dismissable"><p>' . $ex->getMessage() . '</p></div>';
-        if (AG_COMPANY_TEAM_LOGGING) {
-          global $log;
-          $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+        if (self::LOGGING) {
+          global $company_team_log;
+          $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
         }
         $formValues['new_file_url'] = '';
-
       } catch (ImageInputException $ex) {
         echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '. </p></div>';
-        if (AG_COMPANY_TEAM_LOGGING) {
-          global $log;
-          $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+        if (self::LOGGING) {
+          global $company_team_log;
+          $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
         }
         $formValues['new_file_url'] = '';
-
-      } catch (Exception $ex) {
+      } catch (\Exception $ex) {
         echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-        if (AG_COMPANY_TEAM_LOGGING) {
-          global $log;
-          $log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
+        if (self::LOGGING) {
+          global $company_team_log;
+          $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
         }
         $formValues['new_file_url'] = '';
       }
@@ -407,65 +399,60 @@ class Company_Team
 
     return $formValues;
   }
-}
-
-Company_Team::getInstance();
 
 
-global $company_team_db_version;
-$company_team_db_version = '1.0';
 
+  /**
+   * Create a wp db table (if not exists) when plugin is activated
+   */
+  public static function activate_plugin_create_table()
+  {
 
-// need to happen in global namespace
+    global $wpdb;
 
-// we don't need to do anything when deactivation
-// register_deactivation_hook(__FILE__, function () {});
+    $table_name = $wpdb->prefix . self::TABLE_NAME;
 
-register_activation_hook(__FILE__, 'activate_plugin_create_table');
+    $charset_collate = $wpdb->get_charset_collate();
 
-
-/**
- * Create a wp db table (if not exists) when plugin is activated
- */
-function activate_plugin_create_table() {
-  if (AG_COMPANY_TEAM_DEBUG) {
-    $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . Company_Team::br;
-    echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
-  }
-  if (AG_COMPANY_TEAM_LOGGING) {
-    global $log;
-    $log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-  }
-  global $wpdb;
-
-  $table_name = $wpdb->prefix . 'company_team';
-	
-	$charset_collate = $wpdb->get_charset_collate();
-
-  $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+    $sql = "CREATE TABLE IF NOT EXISTS $table_name (
     `id` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     `profile_photo` VARCHAR(255) NOT NULL,
     `last_name` VARCHAR(100) NOT NULL,
     `first_name` VARCHAR(100) NOT NULL,
-    `phone` VARCHAR(20) NOT NULL',
-    `email` VARCHAR(100) NOT NULL',
-    `position` VARCHAR(100) NOT NULL',
-    `department` VARCHAR(100) NOT NULL',
+    `phone` VARCHAR(20) NOT NULL,
+    `email` VARCHAR(100) NOT NULL,
+    `position` VARCHAR(100) NOT NULL,
+    `department` VARCHAR(100) NOT NULL,
     `works_since` DATE NOT NULL,
     PRIMARY KEY (`id`)
   ) $charset_collate;";
 
-  require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
-  dbDelta( $sql );
-  
-  add_option( 'company_team_db_version', $company_team_db_version );
+    require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+    dbDelta($sql);
 
-  return;
+
+    $company_team_options = self::TABLE_NAME . '_db_version';
+    // check if option exists, then delete
+    if (!get_option($company_team_options) === false) {
+      add_option($company_team_options, self::DB_VERSION);
+    }
+
+    return;
+  }
+
+  // when uninstalling the plugin, the uninstall.php will run (see it in the root folder of the plugin)
+  // it will drop the custom database table
+  // if you want to keep your data, save it
+  // click on Company Team menu,
+  // beneath the table there are the links to download table data in JSON and in CSV format
+
+
+
 }
 
-// when uninstalling the plugin, the uninstall.php will run (see it in the root folder of the plugin)
-// it will drop the custom database table
-// if you want to keep your data, save it
-// click on Company Team menu,
-// beneath the table there are the links to download table data in JSON and in CSV format
 
+// pass dependency class instantiations as params
+Company_Team::getInstance(
+  new \AGCompanyTeam\Crud(),
+  new \AGCompanyTeam\ShortCodes()
+);

@@ -1,5 +1,5 @@
 <?php
-
+namespace AGCompanyTeam;
 /**
 * Finally, a light, permissions-checking logging class.
 *
@@ -20,7 +20,7 @@
 /**
 * Class documentation
 */
-class AG_Company_Team_KLogger
+class KLogger
 {
     /**
 * Error severity, from low to high. From BSD syslog RFC, secion 4.1.1

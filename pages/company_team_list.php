@@ -1,4 +1,5 @@
 <?php
+
 // display member list in a admin table
 
 global $wpdb;
@@ -95,7 +96,7 @@ $json_data = json_encode($formData);
   </table>
 </div>
 <?php
-Company_Team_Save_Data::saveDataToJSON('company_team', $json_data);
+\AGCompanyTeam\Company_Team_Save_Data::saveDataToJSON('company_team', $json_data);
 
-Company_Team_Save_Data::saveDataToCSV('company_team', $formData);
+\AGCompanyTeam\Company_Team_Save_Data::saveDataToCSV('company_team', $formData);
 ?>
