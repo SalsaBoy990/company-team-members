@@ -1,9 +1,9 @@
 <?php
 /*
 Plugin Name: Company Team Members
-Plugin URI: https://example.com/
+Plugin URI: https://github.com/SalsaBoy990/company-team-members
 Description: Company Team Members plugin
-Version: 0.1
+Version: 1.0
 Author: András Gulácsi
 Author URI: https://github.com/SalsaBoy990
 License: GPLv2 or later
