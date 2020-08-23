@@ -1,5 +1,6 @@
 <?php
 namespace AGCompanyTeam;
+defined( 'ABSPATH' ) or die();
 /**
  * Define a custom exception class
  */

@@ -12,6 +12,7 @@
     <div>
       <form action="#" method="post" enctype="multipart/form-data">
         <input type="hidden" name="memberid" value="">
+        <?php wp_nonce_field( 'company_team_insert', 'company_admin_insert_security' ); ?>
         <div class="form-group mbhalf">
           <label for="last_name"><?php _e('Last name', 'company-team'); ?></label><br />
           <input type="text" class="form-control" name="last_name" value="" />
@@ -25,7 +26,7 @@
           <div class="company-team mthalf">
             <input type="file" name="profilepicture" id="profilepicture" aria-describedby="profilepicture">
           </div>
-          <span class="italic">(Min. resolution: 220px * 220 px, max. size: 64 KB)</span>
+          <span class="italic"></span>
         </div>
         <div class="form-group mbhalf">
           <label for="phone"><?php _e('Phone number', 'company-team'); ?></label><br />

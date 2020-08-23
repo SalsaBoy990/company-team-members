@@ -1,5 +1,9 @@
 <?php
 namespace AGCompanyTeam;
+
+defined( 'ABSPATH' ) or die();
+
+if ( ! class_exists( 'ShortCodes')):
 /**
  * Shortcode functionality class
  * 
@@ -134,3 +138,5 @@ class ShortCodes
     return $content;
   }
 }
+
+endif;

@@ -1,22 +1,31 @@
 <?php
 
-// display member list in a admin table
 
-global $wpdb;
-$valid = true;
+if (current_user_can('manage_options')) {
 
-$sql = "SELECT * FROM " . $wpdb->prefix . "company_team";
+  // display member list in a admin table
 
-$formData = $wpdb->get_results($sql);
+  global $wpdb;
+  $valid = true;
 
-// print_r($formData);
+  $sql = "SELECT * FROM " . $wpdb->prefix . "company_team";
 
-if (!$formData) {
+  $formData = $wpdb->get_results($sql);
+
+  // print_r($formData);
+
+  if (!$formData) {
+    $valid = false;
+    echo $sql . '- This form is invalid.';
+  }
+
+  $json_data = json_encode($formData);
+} else {
+  $json_data = null;
   $valid = false;
-  echo $sql . '- This form is invalid.';
-}
+  echo 'You are not authorized to perform this action.';
 
-$json_data = json_encode($formData);
+}
 
 ?>
 <h1 class="mt1 mb1"><?php echo __('Manage Company Team Members', 'company-team'); ?></h1>
@@ -60,8 +69,8 @@ $json_data = json_encode($formData);
           <tr>
             <form action="" method="post">
               <input type="hidden" name="listaction" value="edit">
-              <input type="hidden" name="memberid" value="<?php echo $id ?>">
-              <!-- <td><?php echo $id; ?></td> -->
+              <input type="hidden" name="memberid" value="<?php echo esc_html($id) ?>">
+              <!-- <td><?php echo esc_html($id); ?></td> -->
               <td>
                 <div class="btn-group" role="group">
                   <button type="submit" class="button-secondary"><span class="company-team dashicons dashicons-edit"></span><?php _e('Edit', 'company-team'); ?></button>
@@ -70,7 +79,7 @@ $json_data = json_encode($formData);
               <td class="small-col">
                 <?php
                 if (!empty($profile_photo)) : ?>
-                  <img class="small-image" src="<?php echo $profile_photo ?>" alt="<?php echo $last_name . ' ' . $first_name; ?>" />
+                  <img class="small-image" src="<?php echo esc_url($profile_photo) ?>" alt="<?php echo esc_html($last_name) . ' ' . esc_html($first_name); ?>" />
                 <?php
                 else :
                 ?>
@@ -79,13 +88,13 @@ $json_data = json_encode($formData);
                 endif;
                 ?>
               </td>
-              <td class="small-col"><?php echo $last_name; ?></td>
-              <td class="small-col"><?php echo $first_name; ?></td>
-              <td class="medium-col"><?php echo $phone; ?></td>
-              <td class="medium-col"><?php echo $email; ?></td>
-              <td class="medium-col"><?php echo $position; ?></td>
-              <td class="medium-col"><?php echo $department; ?></td>
-              <td class="medium-col"><?php echo $works_since; ?></td>
+              <td class="small-col"><?php echo esc_html($last_name); ?></td>
+              <td class="small-col"><?php echo esc_html($first_name); ?></td>
+              <td class="medium-col"><?php echo esc_html($phone); ?></td>
+              <td class="medium-col"><?php echo esc_html($email); ?></td>
+              <td class="medium-col"><?php echo esc_html($position); ?></td>
+              <td class="medium-col"><?php echo esc_html($department); ?></td>
+              <td class="medium-col"><?php echo esc_html($works_since); ?></td>
             </form>
           </tr>
       <?php

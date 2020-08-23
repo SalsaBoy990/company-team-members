@@ -1,6 +1,8 @@
 <?php
 namespace AGCompanyTeam;
+defined( 'ABSPATH' ) or die();
 
+if ( ! class_exists( 'Company_Team_Save_Data')):
 class Company_Team_Save_Data
 {
 
@@ -219,3 +221,4 @@ class Company_Team_Save_Data
 }
 
 Company_Team_Save_Data::getInstance();
+endif;

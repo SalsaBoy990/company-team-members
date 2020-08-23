@@ -16,7 +16,7 @@
         <?php
         if ($photo) :
           if (!empty($profile_photo_field)) : ?>
-            <img src="<?php echo $profile_photo_field ?>" alt="<?php echo ($first_name_first) ? ($first_name_field . ' ' . $last_name_field) : ($last_name_field . ' ' . $first_name_field); ?>" />
+            <img src="<?php echo esc_url($profile_photo_field) ?>" alt="<?php echo ($first_name_first) ? (esc_html($first_name_field) . ' ' . esc_html($last_name_field)) : (esc_html($last_name_field) . ' ' . esc_html($first_name_field)); ?>" />
           <?php
           else :
           ?>
@@ -30,35 +30,35 @@
           <?php if ($name) : ?>
             <h2>
               <?php if ($first_name_first) : ?>
-                <?php echo $first_name_field . ' ' . $last_name_field; ?>
+                <?php echo esc_html($first_name_field) . ' ' . esc_html($last_name_field); ?>
               <?php else :
-                echo $last_name_field . ' ' . $first_name_field;
+                echo esc_html($last_name_field) . ' ' . esc_html($first_name_field);
               endif; ?>
             </h2>
           <?php endif; ?>
 
           <?php if ($position) : ?>
-            <div><?php echo $position_field; ?></div>
+            <div><?php echo esc_html($position_field); ?></div>
           <?php endif; ?>
 
           <?php if ($department) : ?>
-            <div><?php echo $department_field; ?></div>
+            <div><?php echo esc_html($department_field); ?></div>
           <?php endif; ?>
 
           <?php if ($works_since) : ?>
-            <div><?php echo $works_since_field; ?></div>
+            <div><?php echo esc_html($works_since_field); ?></div>
           <?php endif; ?>
         </div>
 
         <ul>
           <li>
             <?php if ($phone) : ?>
-              <a href="<?php echo 'tel:' . $phone_field; ?>"><?php echo $phone_field; ?></a>
+              <a href="<?php echo 'tel:' . esc_url($phone_field); ?>"><?php echo esc_html($phone_field); ?></a>
             <?php endif; ?>
           </li>
           <li>
             <?php if ($email) : ?>
-              <a href="<?php echo 'mailto:' . $email_field; ?>"><?php echo $email_field; ?></a>
+              <a href="<?php echo 'mailto:' . esc_url($email_field); ?>"><?php echo esc_html($email_field); ?></a>
             <?php endif; ?>
           </li>
         </ul>

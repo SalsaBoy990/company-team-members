@@ -3,7 +3,7 @@
 Plugin Name: Company Team Members
 Plugin URI: https://github.com/SalsaBoy990/company-team-members
 Description: Company Team Members plugin
-Version: 1.0
+Version: 1.0.1
 Author: András Gulácsi
 Author URI: https://github.com/SalsaBoy990
 License: GPLv2 or later
@@ -15,9 +15,15 @@ Domain Path: /languages
 // class/function/const name collisions
 namespace AGCompanyTeam;
 
+defined( 'ABSPATH' ) or die('hhrdshds');
+
+
+
+
 // require all requires once
 require_once 'requires.php';
 
+if ( ! class_exists( 'Company_Team')):
 
 /**
  * Company Team Members plugin class
@@ -248,159 +254,6 @@ class Company_Team
 
 
 
-  /**
-   * Sanitizes input values
-   * strips tags, more sanitization needed!
-   * @return string
-   */
-  function sanitize_input($input)
-  {
-    if (self::DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . Company_Team::br;
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
-    }
-    if (self::LOGGING) {
-      global $company_team_log;
-      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-    }
-    return wp_strip_all_tags(trim($input));
-  }
-
-
-
-  /**
-   * Get form input, sanitize values
-   * @return array associative
-   */
-  function get_form_input_values()
-  {
-    if (self::DEBUG) {
-      $info_text = "Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__ . Company_Team::br;
-      echo '<div class="notice notice-info is-dismissible">' . $info_text . '</p></div>';
-    }
-    if (self::LOGGING) {
-      global $company_team_log;
-      $company_team_log->logInfo("Entering - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-    }
-    // store escaped user input field values
-    $formValues = array();
-
-
-    if (isset($_FILES['profilepicture']) && !empty($_FILES['profilepicture'])) {
-
-      // echo '<pre>';
-      // print_r($_FILES['profilepicture']);
-      // echo '</pre>';
-
-      try {
-        // get error code from file input object
-        $error_code = intval($_FILES['profilepicture']['error'], 10);
-        $profilepicture = $_FILES['profilepicture'];
-        // POST image error
-        if ($error_code > 0) {
-          /**
-           * Error code explanations
-           * @see https://www.php.net/manual/en/features.file-upload.errors.php
-           */
-          switch ($error_code) {
-            case 1:
-              throw new ImageInputException('The uploaded file exceeds the upload_max_filesize directive in php.ini.');
-              break;
-            case 2:
-              throw new ImageInputException('The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.');
-              break;
-            case 3:
-              throw new ImageInputException('The uploaded file was only partially uploaded.');
-              break;
-            case 4:
-              throw new NoImageUploadException('No profile image was uploaded. The existing image will be used, or if no image exists, a placeholder image will be used.');
-              break;
-            case 6:
-              throw new ImageInputException('Missing a temporary folder.');
-              break;
-            case 7:
-              throw new ImageInputException('Failed to write file to disk.');
-              break;
-            case 8:
-              throw new ImageInputException('A PHP extension stopped the file upload.');
-              break;
-            default:
-              throw new ImageInputException('An unspecified PHP error occured.');
-              break;
-          }
-        }
-        $new_file_url = $this->add_profile_photo($profilepicture);
-        $formValues['new_file_url'] = $new_file_url;
-      } catch (NoImageUploadException $ex) {
-        echo '<div class="notice notice-warning is-dismissable"><p>' . $ex->getMessage() . '</p></div>';
-        if (self::LOGGING) {
-          global $company_team_log;
-          $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-        }
-        $formValues['new_file_url'] = '';
-      } catch (ImageInputException $ex) {
-        echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '. </p></div>';
-        if (self::LOGGING) {
-          global $company_team_log;
-          $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-        }
-        $formValues['new_file_url'] = '';
-      } catch (\Exception $ex) {
-        echo '<div class="notice notice-error"><p>' . $ex->getMessage() . '</p></div>';
-        if (self::LOGGING) {
-          global $company_team_log;
-          $company_team_log->logInfo($ex->getMessage() . " - " . __FILE__ . ":" . __FUNCTION__ . ":" . __LINE__);
-        }
-        $formValues['new_file_url'] = '';
-      }
-    }
-
-    if (isset($_POST['memberid'])) {
-      $id = $this->sanitize_input($_POST['memberid']);
-      $id = intval($id, 10);
-      $formValues['id'] = absint($id);
-    }
-
-    if (isset($_POST['last_name'])) {
-      $last_name = $this->sanitize_input($_POST['last_name']);
-      $formValues['last_name'] = $last_name;
-    }
-
-    if (isset($_POST['first_name'])) {
-      $first_name = $this->sanitize_input($_POST['first_name']);
-      $formValues['first_name'] = $first_name;
-    }
-
-    if (isset($_POST['phone'])) {
-      $phone = $this->sanitize_input($_POST['phone']);
-      $formValues['phone'] = $phone;
-    }
-
-    if (isset($_POST['email'])) {
-      $email = $this->sanitize_input($_POST['email']);
-      $formValues['email'] = $email;
-    }
-
-    if (isset($_POST['position'])) {
-      $position = $this->sanitize_input($_POST['position']);
-      $formValues['position'] = $position;
-    }
-
-    if (isset($_POST['department'])) {
-      $department = $this->sanitize_input($_POST['department']);
-      $formValues['department'] = $department;
-    }
-
-    if (isset($_POST['works_since'])) {
-      $works_since = $this->sanitize_input($_POST['works_since']);
-      $formValues['works_since'] = $works_since;
-    }
-
-
-    return $formValues;
-  }
-
-
 
   /**
    * Create a wp db table (if not exists) when plugin is activated
@@ -456,3 +309,5 @@ Company_Team::getInstance(
   new \AGCompanyTeam\Crud(),
   new \AGCompanyTeam\ShortCodes()
 );
+
+endif;
