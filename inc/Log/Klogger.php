@@ -1,5 +1,7 @@
 <?php
-namespace AGCompanyTeam;
+
+namespace AG\CompanyTeam\Log;
+
 /**
 * Finally, a light, permissions-checking logging class.
 *

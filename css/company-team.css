@@ -144,3 +144,8 @@ div.company-team.list-heading h2 {
   margin-bottom: 0.25rem;
 }
 
+img.company-team.small-img {
+  width: 200px;
+  height: auto;
+}
+
